@@ -1,20 +1,61 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# FE-DADN-252 Fullstack Branch
 
-# Run and deploy your AI Studio app
+This branch adds a mock backend and connects the existing frontend dashboard to API data.
 
-This contains everything you need to run your app locally.
+## What was added
 
-View your app in AI Studio: https://ai.studio/apps/69f2877f-ca76-438c-8a6e-5d451e8dd86f
+- Added `backend/` Express server
+- Added mock API mode so the project can run without PostgreSQL
+- Added mock dashboard data for sensors, devices, logs, and alerts
+- Connected frontend UI to backend APIs
+- Added device toggle actions from frontend to backend
+- Kept the existing frontend layout and visual design
 
-## Run Locally
+## Project Structure
 
-**Prerequisites:**  Node.js
+```text
+FE-DADN-252/
+  src/
+  backend/
+Frontend
+Tech stack:
 
+React
+TypeScript
+Vite
+Tailwind CSS
+Run frontend:
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+bash
+
+npm install
+npm run dev
+Frontend URL:
+
+http://localhost:3000
+Backend
+Tech stack:
+
+Node.js
+Express
+Run backend:
+
+bash
+
+cd backend
+npm install
+node src/server.js
+Backend URL:
+
+http://localhost:4000
+Notes
+Backend currently supports mock mode for demo/testing
+No PostgreSQL setup is required for the current branch demo
+Adafruit integration is not required yet
+Frontend calls backend through API integration added in this branch
+Main changes in this branch
+Added backend folder and API routes
+Added mock data store
+Updated frontend to fetch dashboard data from backend
+Updated frontend to send device commands to backend
+Added environment config for local frontend/backend connection
