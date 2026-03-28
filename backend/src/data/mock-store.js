@@ -233,6 +233,10 @@ function getLatestReadings() {
       humidity: latest.humidity ?? null,
       light_level: latest.light_level ?? null,
       ir_detected: latest.ir_detected ?? null,
+      anomaly_flag: latest.anomaly_flag ?? null,
+      status_label: latest.status_label ?? null,
+      latitude: latest.latitude ?? null,
+      longitude: latest.longitude ?? null,
       recorded_at: latest.recorded_at || null
     };
   });
@@ -251,6 +255,10 @@ function getReadingHistory(deviceCode, limit) {
       humidity: item.humidity ?? null,
       light_level: item.light_level ?? null,
       ir_detected: item.ir_detected ?? null,
+      anomaly_flag: item.anomaly_flag ?? null,
+      status_label: item.status_label ?? null,
+      latitude: item.latitude ?? null,
+      longitude: item.longitude ?? null,
       recorded_at: item.recorded_at
     }));
 }
@@ -349,8 +357,14 @@ function receiveReading(payload) {
 
   const temperature = parseNumber(payload.temperature);
   const humidity = parseNumber(payload.humidity);
-  const lightLevel = parseNumber(payload.light_level);
-  const irDetected = parseBoolean(payload.ir_detected);
+  const lightLevel = parseNumber(payload.light_level ?? payload.light);
+  const irDetected = parseBoolean(payload.ir_detected ?? payload.motion);
+  const anomalyFlag = parseBoolean(
+    payload.anomaly_flag ?? payload.anomaly ?? payload.custom_value ?? payload.customValue
+  );
+  const latitude = parseNumber(payload.latitude ?? payload.lat);
+  const longitude = parseNumber(payload.longitude ?? payload.long ?? payload.lng);
+  const statusLabel = normalizeUpper(payload.status_label);
   const reading = {
     recorded_at: new Date().toISOString()
   };
@@ -379,11 +393,28 @@ function receiveReading(payload) {
     getDeviceByCode("CAMERA_FRONT").value_number = irDetected ? 1 : 0;
   }
 
+  if (anomalyFlag !== null) {
+    reading.anomaly_flag = anomalyFlag;
+  }
+
+  if (statusLabel) {
+    reading.status_label = statusLabel;
+  }
+
+  if (latitude !== null) {
+    reading.latitude = latitude;
+  }
+
+  if (longitude !== null) {
+    reading.longitude = longitude;
+  }
+
   addAlertsForDevice(device, {
     temperature,
     humidity,
     lightLevel,
-    irDetected
+    irDetected,
+    anomalyFlag
   });
 
   addActivity(`Received new reading from ${device.device_name}`, "info");

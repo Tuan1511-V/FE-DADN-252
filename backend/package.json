@@ -4,7 +4,8 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "node --watch src/server.js"
+    "dev": "node --watch src/server.js",
+    "db:import:iot": "node scripts/import-iot-data.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

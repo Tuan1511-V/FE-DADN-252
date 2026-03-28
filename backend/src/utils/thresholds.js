@@ -3,7 +3,7 @@ function getThresholdNumber(value, fallback) {
   return Number.isNaN(n) ? fallback : n;
 }
 
-function buildAlerts({ temperature, humidity, lightLevel, irDetected }) {
+function buildAlerts({ temperature, humidity, lightLevel, irDetected, anomalyFlag }) {
   const alerts = [];
 
   const tempThreshold = getThresholdNumber(process.env.TEMP_THRESHOLD, 35);
@@ -39,6 +39,14 @@ function buildAlerts({ temperature, humidity, lightLevel, irDetected }) {
       alert_type: "MOTION_DETECTED",
       severity: "warning",
       message: "Motion detected near monitored area"
+    });
+  }
+
+  if (anomalyFlag === true) {
+    alerts.push({
+      alert_type: "ANOMALY_DETECTED",
+      severity: "warning",
+      message: "Anomaly flag detected from IoT payload"
     });
   }
 

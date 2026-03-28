@@ -22,6 +22,10 @@ async function getLatestReadings(req, res) {
           sr.humidity,
           sr.light_level,
           sr.ir_detected,
+          sr.anomaly_flag,
+          sr.status_label,
+          sr.latitude,
+          sr.longitude,
           sr.recorded_at
        FROM devices d
        LEFT JOIN sensor_readings sr ON sr.device_id = d.id
@@ -68,6 +72,10 @@ async function getReadingHistory(req, res) {
           sr.humidity,
           sr.light_level,
           sr.ir_detected,
+          sr.anomaly_flag,
+          sr.status_label,
+          sr.latitude,
+          sr.longitude,
           sr.recorded_at
        FROM sensor_readings sr
        JOIN devices d ON d.id = sr.device_id
