@@ -24,7 +24,9 @@ import {
   LayoutDashboard,
   Eye,
   SlidersHorizontal,
+  Hand,
 } from 'lucide-react';
+import HandTrack from './components/HandTrack';
 import {
   AreaChart,
   Area,
@@ -362,7 +364,7 @@ const LogEntry = ({ log }: { log: LogOverview }) => {
 };
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'monitor' | 'control'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'monitor' | 'control' | 'gesture'>('dashboard');
   const [overview, setOverview] = useState<DashboardOverview>(fallbackOverview);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -447,6 +449,13 @@ export default function App() {
           >
             <SlidersHorizontal size={16} />
             <span className="hidden sm:block">Control</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('gesture')}
+            className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeTab === 'gesture' ? 'bg-zinc-800 text-zinc-100 shadow-sm' : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'}`}
+          >
+            <Hand size={16} />
+            <span className="hidden sm:block">Gesture</span>
           </button>
         </nav>
 
@@ -542,6 +551,8 @@ export default function App() {
             </section>
           )}
 
+          {activeTab === 'gesture' && <HandTrack />}
+
           {activeTab === 'control' && (
             <section>
               <div className="flex items-center justify-between mb-6">
@@ -570,15 +581,12 @@ export default function App() {
       </main>
 
       <style>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: #3f3f46;
-          border-radius: 20px;
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #3f3f46; border-radius: 20px; }
+        @keyframes handtrack-flash {
+          0%   { opacity: 0.7; }
+          100% { opacity: 0; }
         }
       `}</style>
     </div>
